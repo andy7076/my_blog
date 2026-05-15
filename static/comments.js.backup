@@ -1,0 +1,95 @@
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function loadComments(slug) {
+    fetch('/api/comments/' + slug)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                renderComments(data.comments, slug);
+            }
+        })
+        .catch(err => console.error('加载评论失败:', err));
+}
+
+function renderComments(comments, postSlug) {
+    const container = document.getElementById('commentsList');
+    if (!container) return;
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get('admin') === 'admin123';
+    
+    let html = '<ul class="comment-list">';
+    comments.forEach(function(comment) {
+        const time = new Date(comment.created_at).toLocaleString('zh-CN');
+        let deleteBtn = '';
+        if (isAdmin) {
+            deleteBtn = '<button class="comment-delete-btn" onclick="deleteComment(' + comment.id + ', \'' + escapeHtml(postSlug) + '\')">删除</button>';
+        }
+        html += '<li class="comment-item">' +
+            '<div class="comment-header">' +
+                '<span class="comment-username">' + escapeHtml(comment.username) + '</span>' +
+                '<span class="comment-time">' + time + '</span>' +
+                deleteBtn +
+            '</div>' +
+            '<div class="comment-content">' + escapeHtml(comment.content) + '</div>' +
+        '</li>';
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+}
+
+function submitComment(slug) {
+    const username = document.getElementById('commentUsername').value.trim();
+    const content = document.getElementById('commentContent').value.trim();
+    const messageDiv = document.getElementById('commentMessage');
+    if (!username || !content) {
+        messageDiv.innerHTML = '<div class="comment-error">请填写用户名和评论内容</div>';
+        return;
+    }
+    fetch('/api/comments/' + slug, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, content: content })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            messageDiv.innerHTML = '<div class="comment-success">评论提交成功！</div>';
+            document.getElementById('commentUsername').value = '';
+            document.getElementById('commentContent').value = '';
+            loadComments(slug);
+            setTimeout(function() { messageDiv.innerHTML = ''; }, 3000);
+        } else {
+            messageDiv.innerHTML = '<div class="comment-error">' + (data.error || '提交失败') + '</div>';
+        }
+    })
+    .catch(err => {
+        messageDiv.innerHTML = '<div class="comment-error">提交失败，请重试</div>';
+        console.error(err);
+    });
+}
+
+function deleteComment(commentId, slug) {
+    if (!confirm('确定要删除这条评论吗？')) {
+        return;
+    }
+    fetch('/api/comments/delete/' + commentId, {
+        method: 'DELETE'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            loadComments(slug);
+        } else {
+            alert(data.error || '删除失败');
+        }
+    })
+    .catch(err => {
+        alert('删除失败，请重试');
+        console.error(err);
+    });
+}

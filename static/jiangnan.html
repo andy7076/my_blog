@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟雨江南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #e8e4d9 0%, #d4d0c5 50%, #b8b5a8 100%);
+            font-family: "KaiTi", "楷体", serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 雨丝效果 */
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .raindrop {
+            position: absolute;
+            width: 1px;
+            height: 15px;
+            background: linear-gradient(180deg, transparent 0%, rgba(100, 120, 130, 0.4) 50%, transparent 100%);
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        /* 标题 */
+        .title {
+            font-size: 4rem;
+            color: #3a4a4a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            letter-spacing: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+        }
+        
+        /* 诗词 */
+        .poem {
+            font-size: 1.4rem;
+            color: #5a6a6a;
+            text-align: center;
+            line-height: 2;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 2s ease-out 1s forwards;
+        }
+        
+        /* 江南画卷 */
+        .scroll {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            background: linear-gradient(180deg, #f5f3ed 0%, #e8e4d9 100%);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 2s ease-out 2s forwards;
+        }
+        
+        /* 远山 */
+        .mountains {
+            position: absolute;
+            bottom: 150px;
+            left: 0;
+            width: 100%;
+            height: 200px;
+        }
+        
+        .mountain {
+            position: absolute;
+            background: linear-gradient(180deg, #6a7a7a 0%, #8a9a9a 100%);
+            border-radius: 50% 50% 0 0;
+            opacity: 0.6;
+        }
+        
+        .mountain:nth-child(1) {
+            width: 300px;
+            height: 180px;
+            left: -50px;
+            bottom: 0;
+        }
+        
+        .mountain:nth-child(2) {
+            width: 400px;
+            height: 220px;
+            left: 200px;
+            bottom: -20px;
+            opacity: 0.4;
+        }
+        
+        .mountain:nth-child(3) {
+            width: 350px;
+            height: 200px;
+            right: -50px;
+            bottom: 0;
+        }
+        
+        /* 水面 */
+        .water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(180deg, rgba(100, 130, 130, 0.3) 0%, rgba(80, 110, 110, 0.5) 100%);
+        }
+        
+        /* 小桥 */
+        .bridge {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 60px;
+        }
+        
+        .bridge-arch {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            border: 8px solid #4a5a5a;
+            border-top: none;
+            border-radius: 0 0 100px 100px;
+        }
+        
+        .bridge-railing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: #4a5a5a;
+            border-radius: 5px;
+        }
+        
+        /* 乌篷船 */
+        .boat {
+            position: absolute;
+            bottom: 40px;
+            right: 150px;
+            width: 120px;
+            height: 40px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .boat-hull {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: #3a4a4a;
+            border-radius: 0 0 60px 60px;
+        }
+        
+        .boat-cover {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            width: 80px;
+            height: 25px;
+            background: #2a3a3a;
+            border-radius: 40px 40px 0 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+        }
+        
+        /* 柳树 */
+        .willow {
+            position: absolute;
+            bottom: 100px;
+            left: 80px;
+            width: 100px;
+            height: 180px;
+        }
+        
+        .willow-trunk {
+            position: absolute;
+            bottom: 0;
+            left: 40px;
+            width: 12px;
+            height: 100px;
+            background: #4a5a5a;
+            border-radius: 6px;
+        }
+        
+        .willow-branches {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+        }
+        
+        .willow-branch {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(180deg, #5a7a6a 0%, transparent 100%);
+            border-radius: 2px;
+            animation: sway 3s ease-in-out infinite;
+            transform-origin: top center;
+        }
+        
+        .willow-branch:nth-child(1) { left: 20px; animation-delay: 0s; }
+        .willow-branch:nth-child(2) { left: 40px; animation-delay: 0.3s; }
+        .willow-branch:nth-child(3) { left: 60px; animation-delay: 0.6s; }
+        .willow-branch:nth-child(4) { left: 80px; animation-delay: 0.9s; }
+        
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        /* 人家 */
+        .house {
+            position: absolute;
+            bottom: 100px;
+            right: 60px;
+            width: 100px;
+            height: 90px;
+        }
+        
+        .house-wall {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 80px;
+            height: 60px;
+            background: #e8e4d9;
+            border: 3px solid #6a7a7a;
+        }
+        
+        .house-roof {
+            position: absolute;
+            bottom: 55px;
+            left: 0;
+            width: 100px;
+            height: 50px;
+            background: #3a4a4a;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        
+        .house-window {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            width: 20px;
+            height: 25px;
+            background: #6a7a7a;
+            border: 2px solid #4a5a5a;
+        }
+        
+        /* 雾气 */
+        .mist {
+            position: absolute;
+            width: 300px;
+            height: 60px;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: mistMove 8s ease-in-out infinite;
+        }
+        
+        .mist:nth-child(1) { bottom: 100px; left: -100px; animation-delay: 0s; }
+        .mist:nth-child(2) { bottom: 150px; right: -100px; animation-delay: 4s; }
+        
+        @keyframes mistMove {
+            0%, 100% { transform: translateX(0); opacity: 0.6; }
+            50% { transform: translateX(30px); opacity: 0.3; }
+        }
+        
+        /* 淡入动画 */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .poem { font-size: 1.1rem; }
+            .scroll { height: 300px; }
+            .mountain { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 雨丝 -->
+    <div class="rain" id="rain"></div>
+    
+    <div class="container">
+        <h1 class="title">烟雨江南</h1>
+        
+        <div class="poem">
+            烟雨入江南，山水如墨染<br>
+            小桥流水人家，乌篷船摇柳岸
+        </div>
+        
+        <div class="scroll">
+            <!-- 远山 -->
+            <div class="mountains">
+                <div class="mountain"></div>
+                <div class="mountain"></div>
+                <div class="mountain"></div>
+            </div>
+            
+            <!-- 雾气 -->
+            <div class="mist"></div>
+            <div class="mist"></div>
+            
+            <!-- 柳树 -->
+            <div class="willow">
+                <div class="willow-trunk"></div>
+                <div class="willow-branches">
+                    <div class="willow-branch"></div>
+                    <div class="willow-branch"></div>
+                    <div class="willow-branch"></div>
+                    <div class="willow-branch"></div>
+                </div>
+            </div>
+            
+            <!-- 小桥 -->
+            <div class="bridge">
+                <div class="bridge-railing"></div>
+                <div class="bridge-arch"></div>
+            </div>
+            
+            <!-- 人家 -->
+            <div class="house">
+                <div class="house-roof"></div>
+                <div class="house-wall"></div>
+                <div class="house-window"></div>
+            </div>
+            
+            <!-- 乌篷船 -->
+            <div class="boat">
+                <div class="boat-cover"></div>
+                <div class="boat-hull"></div>
+            </div>
+            
+            <!-- 水面 -->
+            <div class="water"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 创建雨丝
+        const rain = document.getElementById('rain');
+        const dropCount = 100;
+        
+        for (let i = 0; i < dropCount; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'raindrop';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDuration = (0.5 + Math.random() * 1) + 's';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            drop.style.opacity = 0.2 + Math.random() * 0.4;
+            rain.appendChild(drop);
+        }
+    </script>
+</body>
+</html>
