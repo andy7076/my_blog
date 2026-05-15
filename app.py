@@ -185,6 +185,16 @@ def ads_txt():
     )
 
 
+@app.route("/favicon.ico")
+def favicon():
+    """提供 favicon.ico"""
+    return send_from_directory(
+        os.path.join(os.path.dirname(__file__), "static"),
+        "favicon.ico",
+        mimetype="image/x-icon",
+    )
+
+
 # ==================== 评论 API ====================
 
 
