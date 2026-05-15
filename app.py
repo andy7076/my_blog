@@ -55,10 +55,43 @@ def init_db():
     conn.close()
 
 
+def compress_image_url(url, width=800, quality=85):
+    """给图片 URL 替换为压缩版本"""
+    if not url or not url.endswith((".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp")):
+        return url
+    if url.startswith("/static/") or "static.yyfollower.com" in url:
+        filename = url.split("/")[-1]
+        name, _ = filename.rsplit(".", 1)
+        if url.startswith("https://"):
+            return f"https://static.yyfollower.com/{name}_compressed.jpg"
+        elif url.startswith("http://"):
+            return f"http://static.yyfollower.com/{name}_compressed.jpg"
+        else:
+            return f"/static/{name}_compressed.jpg"
+    return url
+
+
+def process_images_in_html(html):
+    """处理 HTML 中的图片 URL，替换为压缩版本"""
+    import re as regex
+
+    def replace_img(match):
+        img_tag = match.group(0)
+        src_match = regex.search(r'src=["\']([^"\']+)["\']', img_tag)
+        if src_match:
+            old_src = src_match.group(1)
+            new_src = compress_image_url(old_src)
+            if old_src != new_src:
+                img_tag = img_tag.replace(old_src, new_src)
+        return img_tag
+
+    return regex.sub(r"<img[^>]*>", replace_img, html)
+
+
 def parse_post(filename):
     """解析 Markdown 文章"""
     import re
-    
+
     filepath = os.path.join(app.config["POSTS_DIR"], filename)
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
@@ -83,14 +116,17 @@ def parse_post(filename):
     html_body = markdown.markdown(
         body, extensions=["tables", "fenced_code", "codehilite"]
     )
-    
+
+    # 自动替换图片为压缩版本
+    html_body = process_images_in_html(html_body)
+
     # 从渲染后的 HTML 中提取纯文本摘要
     # 1. 移除 HTML 标签
-    text_only = re.sub(r'<[^>]+>', '', html_body)
+    text_only = re.sub(r"<[^>]+>", "", html_body)
     # 2. 移除代码块和多余空白
-    text_only = re.sub(r'\s+', ' ', text_only).strip()
+    text_only = re.sub(r"\s+", " ", text_only).strip()
     # 3. 截取前 200 字符
-    excerpt = text_only[:200] + ('...' if len(text_only) > 200 else '')
+    excerpt = text_only[:200] + ("..." if len(text_only) > 200 else "")
 
     return {
         "slug": filename.replace(".md", ""),
