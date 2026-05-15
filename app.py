@@ -56,18 +56,17 @@ def init_db():
 
 
 def compress_image_url(url, width=800, quality=85):
-    """给图片 URL 替换为压缩版本"""
+    """给图片 URL 替换为 nginx 动态压缩路径"""
     if not url or not url.endswith((".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp")):
         return url
     if url.startswith("/static/") or "static.yyfollower.com" in url:
         filename = url.split("/")[-1]
-        name, _ = filename.rsplit(".", 1)
         if url.startswith("https://"):
-            return f"https://static.yyfollower.com/{name}_compressed.jpg"
+            return f"https://static.yyfollower.com/compressed/{filename}?w={width}&q={quality}"
         elif url.startswith("http://"):
-            return f"http://static.yyfollower.com/{name}_compressed.jpg"
+            return f"http://static.yyfollower.com/compressed/{filename}?w={width}&q={quality}"
         else:
-            return f"/static/{name}_compressed.jpg"
+            return f"/compressed/{filename}?w={width}&q={quality}"
     return url
 
 
