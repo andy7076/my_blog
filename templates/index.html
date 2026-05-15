@@ -5,53 +5,46 @@
 {% block content %}
 <style>
     /* ===== Tools Section ===== */
-    .tools-section-title {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--gray-400);
-        text-transform: uppercase;
-        letter-spacing: 1.2px;
-        margin-bottom: 20px;
-    }
-
     .tools-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 16px;
-        margin-top: 24px;
+        gap: 20px;
+        margin-bottom: 80px;
+        margin-top: 32px;
     }
 
     .tool-card {
         background: var(--white);
         border: 1px solid var(--gray-200);
         border-radius: var(--radius-md);
-        padding: 28px 24px;
-        transition: all 0.2s ease;
+        padding: 32px 28px 28px;
+        transition: all 0.25s ease;
         cursor: default;
+        position: relative;
     }
 
     .tool-card:hover {
         border-color: var(--gray-300);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        transform: translateY(-3px);
     }
 
     .tool-card-top {
         display: flex;
         align-items: flex-start;
         gap: 16px;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
     }
 
     .tool-icon-wrap {
-        width: 48px;
-        height: 48px;
-        border-radius: var(--radius-sm);
-        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: var(--gray-100);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 20px;
         flex-shrink: 0;
     }
 
@@ -65,31 +58,32 @@
         font-weight: 600;
         color: var(--gray-900);
         line-height: 1.3;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
 
     .tool-card-badge {
         display: inline-block;
         font-size: 11px;
         font-weight: 500;
-        color: #4f46e5;
-        background: #eef2ff;
-        padding: 2px 8px;
+        color: var(--gray-500);
+        background: var(--gray-100);
+        padding: 2px 10px;
         border-radius: 20px;
+        letter-spacing: 0.2px;
     }
 
     .tool-card-desc {
         font-size: 14px;
         color: var(--gray-500);
         line-height: 1.7;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
     }
 
     .tool-card-btn {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 9px 20px;
+        padding: 9px 22px;
         background: var(--gray-900);
         color: #fff;
         font-size: 13px;
@@ -97,6 +91,7 @@
         border-radius: var(--radius-sm);
         text-decoration: none;
         transition: all 0.2s ease;
+        letter-spacing: 0.2px;
     }
 
     .tool-card-btn:hover {
@@ -106,10 +101,11 @@
 
     .tool-card-btn .arrow {
         transition: transform 0.2s ease;
+        font-size: 14px;
     }
 
     .tool-card-btn:hover .arrow {
-        transform: translateX(3px);
+        transform: translateX(4px);
     }
 
     /* ===== Post List ===== */
@@ -117,20 +113,47 @@
         display: flex;
         flex-direction: column;
         gap: 0;
-        margin-top: 24px;
+        margin-top: 32px;
+        margin-bottom: 80px;
     }
 
     .post-card {
-        padding: 32px 0;
+        padding: 36px 0;
         border-bottom: 1px solid var(--gray-200);
+        position: relative;
+        padding-left: 20px;
+    }
+
+    .post-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 36px;
+        bottom: 36px;
+        width: 2px;
+        background: var(--gray-200);
+        border-radius: 1px;
+        transition: background 0.25s ease;
+    }
+
+    .post-card:hover::before {
+        background: var(--gray-900);
     }
 
     .post-card:first-child {
         padding-top: 0;
     }
 
+    .post-card:first-child::before {
+        top: 0;
+    }
+
     .post-card:last-child {
         border-bottom: none;
+    }
+
+    .post-card:last-child::before {
+        bottom: 0;
     }
 
     .post-card-title {
@@ -184,7 +207,7 @@
 
     .empty-state {
         text-align: center;
-        padding: 120px 24px;
+        padding: 100px 24px;
         color: var(--gray-400);
         font-size: 15px;
     }
@@ -199,8 +222,8 @@
         align-items: center;
         justify-content: center;
         gap: 16px;
-        margin-top: 40px;
-        padding-top: 32px;
+        margin-top: 48px;
+        padding-top: 36px;
         border-top: 1px solid var(--gray-200);
     }
 
@@ -208,7 +231,7 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        padding: 10px 20px;
+        padding: 10px 22px;
         border: 1px solid var(--gray-200);
         border-radius: var(--radius-sm);
         font-size: 14px;
@@ -240,53 +263,57 @@
     }
 
     /* ===== About Section ===== */
+    .about-section {
+        padding-top: 32px;
+        padding-bottom: 80px;
+    }
+
     .about-card {
-        background: var(--white);
-        border: 1px solid var(--gray-200);
-        border-radius: var(--radius-md);
-        padding: 36px 32px;
-        text-align: center;
         max-width: 420px;
         margin: 0 auto;
     }
 
-    .about-card-icon {
-        font-size: 40px;
-        margin-bottom: 12px;
-    }
-
     .about-card-title {
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 600;
         color: var(--gray-900);
-        margin-bottom: 24px;
+        margin-bottom: 20px;
+        letter-spacing: -0.2px;
+        text-align: center;
     }
 
     .about-links {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 0;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        overflow: hidden;
     }
 
     .about-link {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 14px 20px;
-        border: 1px solid var(--gray-200);
-        border-radius: var(--radius-sm);
+        padding: 16px 20px;
         text-decoration: none;
         transition: all 0.2s ease;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .about-link:last-child {
+        border-bottom: none;
     }
 
     .about-link:hover {
-        border-color: var(--gray-300);
         background: var(--gray-50);
     }
 
     .about-link-icon {
-        font-size: 20px;
+        font-size: 16px;
         flex-shrink: 0;
+        width: 20px;
+        text-align: center;
     }
 
     .about-link-text {
@@ -300,15 +327,10 @@
         color: var(--link);
     }
 
-    @media (max-width: 480px) {
-        .about-card {
-            padding: 28px 20px;
-        }
-    }
-
     @media (max-width: 768px) {
         .tools-grid {
             grid-template-columns: 1fr;
+            gap: 16px;
         }
 
         .posts-pagination {
@@ -317,7 +339,20 @@
         }
 
         .post-card {
-            padding: 24px 0;
+            padding: 28px 0 28px 16px;
+        }
+
+        .post-card::before {
+            top: 28px;
+            bottom: 28px;
+        }
+
+        .post-card:first-child::before {
+            top: 0;
+        }
+
+        .post-card:last-child::before {
+            bottom: 0;
         }
 
         .post-card-title {
@@ -335,7 +370,7 @@
         }
 
         .tool-card {
-            padding: 24px 20px 20px;
+            padding: 24px 20px 22px;
         }
 
         .tool-card-top {
@@ -343,13 +378,14 @@
         }
 
         .tool-icon-wrap {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             font-size: 18px;
         }
     }
 </style>
 
+<!-- Tools Tab -->
 <div class="tab-content{% if active_tab == 'tools' %} active{% endif %}" id="tab-tools">
     <div class="tools-grid">
         <div class="tool-card">
@@ -394,6 +430,7 @@
     </div>
 </div>
 
+<!-- Posts Tab -->
 <div class="tab-content{% if active_tab == 'posts' %} active{% endif %}" id="tab-posts">
     <div class="posts-list">
         {% for post in posts %}
@@ -413,7 +450,6 @@
         </div>
         {% endfor %}
     </div>
-</div>
 
     {% if total_pages > 1 %}
     <div class="posts-pagination">
@@ -434,10 +470,10 @@
     {% endif %}
 </div>
 
+<!-- About Tab -->
 <div class="tab-content{% if active_tab == 'about' %} active{% endif %}" id="tab-about">
-    <div class="about-section" style="margin-top: 24px;">
+    <div class="about-section">
         <div class="about-card">
-            <div class="about-card-icon">👤</div>
             <div class="about-card-title">关于我</div>
             <div class="about-links">
                 <a class="about-link" href="mailto:wyz@yyfollower.com">

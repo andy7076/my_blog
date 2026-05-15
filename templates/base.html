@@ -32,7 +32,7 @@
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.03);
             --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.04), 0 4px 6px rgba(0, 0, 0, 0.03);
-            --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -77,9 +77,9 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: saturate(180%) blur(24px);
+            -webkit-backdrop-filter: saturate(180%) blur(24px);
             border-bottom: 1px solid var(--gray-200);
         }
 
@@ -91,9 +91,9 @@
         }
 
         .site-title {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.4px;
+            font-size: 17px;
+            font-weight: 650;
+            letter-spacing: -0.3px;
             color: var(--black);
         }
 
@@ -105,11 +105,11 @@
         nav {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
         }
 
         .header-tab-btn {
-            padding: 8px 18px;
+            padding: 7px 18px;
             font-size: 14px;
             font-weight: 500;
             color: var(--gray-400);
@@ -122,6 +122,7 @@
             white-space: nowrap;
             font-family: inherit;
             line-height: 1.4;
+            letter-spacing: 0.3px;
         }
 
         .header-tab-btn:hover {
@@ -141,21 +142,21 @@
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
                 -ms-overflow-style: none;
-                gap: 2px;
+                gap: 0;
             }
             nav::-webkit-scrollbar {
                 display: none;
             }
             .header-tab-btn {
                 flex-shrink: 0;
-                padding: 8px 12px;
+                padding: 7px 14px;
                 font-size: 13px;
             }
         }
 
         @media (max-width: 480px) {
             .header-tab-btn {
-                padding: 6px 10px;
+                padding: 6px 12px;
                 font-size: 12px;
             }
         }
@@ -163,7 +164,7 @@
         /* Tab content animations */
         .tab-content {
             display: none;
-            animation: tabFadeIn 0.25s ease;
+            animation: tabFadeIn 0.3s ease;
         }
 
         .tab-content.active {
@@ -171,21 +172,20 @@
         }
 
         @keyframes tabFadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== Main Content ===== */
         main {
             min-height: calc(100vh - 280px);
-            padding: 64px 0;
+            padding: 56px 0 80px;
         }
 
         /* ===== Footer ===== */
         footer {
             border-top: 1px solid var(--gray-200);
-            padding: 40px 0 32px;
-            margin-top: 80px;
+            padding: 36px 0 28px;
             background: var(--white);
         }
 
@@ -193,7 +193,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .footer-links {
@@ -207,12 +207,13 @@
         .footer-link {
             color: var(--gray-400);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             transition: color var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 6px;
             padding: 4px 0;
+            letter-spacing: 0.2px;
         }
 
         .footer-link:hover {
@@ -221,7 +222,7 @@
 
         .footer-divider {
             color: var(--gray-200);
-            font-size: 12px;
+            font-size: 11px;
             user-select: none;
         }
 
@@ -246,6 +247,7 @@
             font-size: 12px;
             line-height: 1.6;
             text-align: center;
+            letter-spacing: 0.2px;
         }
 
         /* ===== Responsive ===== */
@@ -259,16 +261,16 @@
             }
 
             .site-title {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             main {
-                padding: 48px 0;
+                padding: 40px 0 60px;
             }
 
             .footer-links {
                 flex-direction: column;
-                gap: 12px;
+                gap: 10px;
             }
 
             .footer-divider {
@@ -282,7 +284,7 @@
             }
 
             main {
-                padding: 40px 0;
+                padding: 32px 0 48px;
             }
         }
     </style>
@@ -294,9 +296,9 @@
         <div class="container">
             <div class="site-title"><a href="/">yyfollower</a></div>
             <nav>
-                <button class="header-tab-btn{% if active_tab == 'tools' %} active{% endif %}" data-tab="tools" onclick="switchTab('tools')">🔧 工具集</button>
-                <button class="header-tab-btn{% if active_tab == 'posts' %} active{% endif %}" data-tab="posts" onclick="switchTab('posts')">📝 博客</button>
-                <button class="header-tab-btn{% if active_tab == 'about' %} active{% endif %}" data-tab="about" onclick="switchTab('about')">👤 关于</button>
+                <button class="header-tab-btn{% if active_tab == 'tools' %} active{% endif %}" data-tab="tools" onclick="switchTab('tools')">工具集</button>
+                <button class="header-tab-btn{% if active_tab == 'posts' %} active{% endif %}" data-tab="posts" onclick="switchTab('posts')">博客</button>
+                <button class="header-tab-btn{% if active_tab == 'about' %} active{% endif %}" data-tab="about" onclick="switchTab('about')">关于</button>
             </nav>
         </div>
     </header>
@@ -329,15 +331,12 @@
         }
 
         function switchTab(name) {
-            // 检查当前页面是否有 tab 内容区
             var target = document.getElementById('tab-' + name);
             if (!target) {
-                // 不在首页，跳转到首页并带上 tab 参数
                 window.location.href = '/?tab=' + name;
                 return;
             }
 
-            // 更新 URL 参数（不刷新页面）
             var url = new URL(window.location);
             url.searchParams.set('tab', name);
             window.history.replaceState({tab: name}, '', url);
@@ -352,11 +351,9 @@
             });
             target.classList.add('active');
 
-            // 滚动到顶部
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        // 页面加载时检测 URL 中的 tab 参数
         (function() {
             var params = new URLSearchParams(window.location.search);
             var tab = params.get('tab');
